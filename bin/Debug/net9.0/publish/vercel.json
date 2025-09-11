@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "/back-tcc/bin/Release/net9.0/publish/back-tcc.exe",
+      "use": "@vercel/dotnet"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/back-tcc/bin/Release/net9.0/publish/back-tcc.exe"
+    }
+  ]
+}

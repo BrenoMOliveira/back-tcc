@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ZOaAgX2Z+jg=",
+  "dgSpecHash": "RIxC6maSvzk=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Breno\\back-tcc\\back-tcc.csproj",
+  "projectFilePath": "C:\\Users\\Breno\\tcc-gerenciador-comanda\\back-tcc\\back-tcc.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Breno\\.nuget\\packages\\bcrypt.net-next\\4.0.2\\bcrypt.net-next.4.0.2.nupkg.sha512",
     "C:\\Users\\Breno\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

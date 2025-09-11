@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Breno\\back-tcc\\back-tcc.csproj": {}
+    "C:\\Users\\Breno\\tcc-gerenciador-comanda\\back-tcc\\back-tcc.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Breno\\back-tcc\\back-tcc.csproj": {
+    "C:\\Users\\Breno\\tcc-gerenciador-comanda\\back-tcc\\back-tcc.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Breno\\back-tcc\\back-tcc.csproj",
+        "projectUniqueName": "C:\\Users\\Breno\\tcc-gerenciador-comanda\\back-tcc\\back-tcc.csproj",
         "projectName": "back-tcc",
-        "projectPath": "C:\\Users\\Breno\\back-tcc\\back-tcc.csproj",
+        "projectPath": "C:\\Users\\Breno\\tcc-gerenciador-comanda\\back-tcc\\back-tcc.csproj",
         "packagesPath": "C:\\Users\\Breno\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Breno\\back-tcc\\obj\\",
+        "outputPath": "C:\\Users\\Breno\\tcc-gerenciador-comanda\\back-tcc\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

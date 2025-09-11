@@ -138,5 +138,10 @@ C:\Users\Breno\tcc-gerenciador-comanda\back-tcc\bin\Debug\net9.0\Microsoft.Ident
 C:\Users\Breno\tcc-gerenciador-comanda\back-tcc\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\Breno\tcc-gerenciador-comanda\back-tcc\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\Breno\tcc-gerenciador-comanda\back-tcc\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
-C:\Users\Breno\tcc-gerenciador-comanda\back-tcc\bin\Debug\net9.0\vercel.json
-C:\Users\Breno\tcc-gerenciador-comanda\back-tcc\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+C:\Users\Breno\tcc-gerenciador-comanda\back-tcc\bin\Debug\net9.0\publish\web.config
+C:\Users\Breno\tcc-gerenciador-comanda\back-tcc\bin\Debug\net9.0\publish\appsettings.Development.json
+C:\Users\Breno\tcc-gerenciador-comanda\back-tcc\bin\Debug\net9.0\publish\appsettings.json
+C:\Users\Breno\tcc-gerenciador-comanda\back-tcc\bin\Debug\net9.0\publish\back-tcc.deps.json
+C:\Users\Breno\tcc-gerenciador-comanda\back-tcc\bin\Debug\net9.0\publish\back-tcc.runtimeconfig.json
+C:\Users\Breno\tcc-gerenciador-comanda\back-tcc\bin\Debug\net9.0\publish\back-tcc.staticwebassets.endpoints.json
+C:\Users\Breno\tcc-gerenciador-comanda\back-tcc\bin\Debug\net9.0\publish\vercel.json
