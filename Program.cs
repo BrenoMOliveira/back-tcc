@@ -8,7 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddOpenApi();
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION")
+    ?? throw new InvalidOperationException("DB_CONNECTION not configured.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 builder.Services
@@ -17,6 +18,8 @@ builder.Services
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
 var jwtSettings = builder.Configuration.GetSection("Jwt");
+var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY")
+    ?? throw new InvalidOperationException("JWT_KEY not configured.");
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -28,7 +31,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             ValidIssuer = jwtSettings["Issuer"],
             ValidAudience = jwtSettings["Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(jwtSettings["Key"]!))
+            IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(jwtKey))
         };
     });
 builder.Services.AddAuthorization();
