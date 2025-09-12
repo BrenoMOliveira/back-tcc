@@ -12,9 +12,9 @@ using System;
 using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("back-tcc")]
-[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
+[assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9db5346d781cebe8ba33c3599c48b54bb704ea71")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0f2dd7c02ef97c09984ddba1771d48028f626517")]
 [assembly: System.Reflection.AssemblyProductAttribute("back-tcc")]
 [assembly: System.Reflection.AssemblyTitleAttribute("back-tcc")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

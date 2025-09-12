@@ -1,0 +1,9 @@
+C:\Users\Breno\tcc-gerenciador-comanda\back-tcc\obj\Debug\net8.0\back-tcc.csproj.AssemblyReference.cache
+C:\Users\Breno\tcc-gerenciador-comanda\back-tcc\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Users\Breno\tcc-gerenciador-comanda\back-tcc\obj\Debug\net8.0\back-tcc.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Breno\tcc-gerenciador-comanda\back-tcc\obj\Debug\net8.0\back-tcc.AssemblyInfoInputs.cache
+C:\Users\Breno\tcc-gerenciador-comanda\back-tcc\obj\Debug\net8.0\back-tcc.AssemblyInfo.cs
+C:\Users\Breno\tcc-gerenciador-comanda\back-tcc\obj\Debug\net8.0\back-tcc.csproj.CoreCompileInputs.cache
+C:\Users\Breno\tcc-gerenciador-comanda\back-tcc\obj\Debug\net8.0\back-tcc.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Breno\tcc-gerenciador-comanda\back-tcc\obj\Debug\net8.0\back-tcc.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Breno\tcc-gerenciador-comanda\back-tcc\obj\Debug\net8.0\back-tcc.sourcelink.json
