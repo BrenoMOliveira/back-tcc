@@ -42,6 +42,18 @@ namespace back_tcc.Controllers
             public string formapagamento { get; set; } = string.Empty;
         }
 
+        private static bool StatusEquals(string? value, string expected) =>
+           string.Equals(value?.Trim(), expected, StringComparison.OrdinalIgnoreCase);
+
+        private static bool IsClosedStatus(string? status) =>
+            StatusEquals(status, "Fechada") || StatusEquals(status, "Paga");
+
+        private static bool IsAwaitingStatus(string? status) =>
+            StatusEquals(status, "Aguardando Pagamento");
+
+        private static bool IsOpenStatus(string? status) =>
+            !IsClosedStatus(status) && !IsAwaitingStatus(status);
+
         [HttpPost]
         public async Task<ActionResult<Pagamento>> CreatePagamento(PagamentoDto dto)
         {
@@ -68,52 +80,114 @@ namespace back_tcc.Controllers
             _context.Pagamentos.Add(pagamento);
             comanda.pagamentos.Add(pagamento);
 
+            SubComanda? subComanda = null;
+            decimal? valorRestanteSubcomanda = null;
+            decimal totalSub = 0m;
+            decimal pagoSub = 0m;
+            decimal saldoSub = 0m;
+
             if (dto.subcomandaid.HasValue)
             {
-                var sub = comanda.subcomandas.FirstOrDefault(s => s.id == dto.subcomandaid.Value);
-                if (sub == null) return NotFound("Subcomanda nao encontrada");
-                sub.pagamentos.Add(pagamento);
-                decimal totalSub = sub.pedidos.Sum(p => p.precounit * p.quantidade);
-                decimal pagoSub = sub.pagamentos.Sum(p => p.valorpago);
-                if (pagoSub >= totalSub)
+                subComanda = comanda.subcomandas.FirstOrDefault(s => s.id == dto.subcomandaid.Value);
+                if (subComanda == null) return NotFound("Subcomanda nao encontrada");
+
+                subComanda.pagamentos.Add(pagamento);
+
+                totalSub = subComanda.pedidos.Sum(p => p.precounit * p.quantidade);
+                pagoSub = subComanda.pagamentos.Sum(p => p.valorpago);
+                saldoSub = totalSub - pagoSub;
+
+                valorRestanteSubcomanda = saldoSub > 0 ? saldoSub : 0m;
+
+                if (saldoSub <= 0)
                 {
-                    sub.status = "Fechada";
+                    subComanda.status = "Fechada";
+                }
+                else if (pagoSub > 0)
+                {
+                    subComanda.status = "Aguardando Pagamento";
                 }
             }
 
-            decimal totalComanda = comanda.pedidos.Sum(p => p.precounit * p.quantidade)
-                + comanda.subcomandas.Sum(s => s.pedidos.Sum(p => p.precounit * p.quantidade));
-            decimal totalPago = comanda.pagamentos.Sum(p => p.valorpago);
-            decimal valorRestante = totalComanda - totalPago;
-            if (valorRestante < 0) valorRestante = 0;
+            var pedidosSemSub = comanda.pedidos
+                .Where(p => p.subcomandaid == null)
+                .Sum(p => p.precounit * p.quantidade);
 
-            if (totalPago >= totalComanda && comanda.subcomandas.All(s => s.status == "Fechada"))
+            var pedidosSub = comanda.subcomandas.Sum(s => s.pedidos.Sum(p => p.precounit * p.quantidade));
+
+            decimal totalComanda = pedidosSemSub + pedidosSub;
+            decimal totalPago = comanda.pagamentos.Sum(p => p.valorpago);
+
+            decimal saldoComandaBruto = totalComanda - totalPago;
+            decimal valorRestante = saldoComandaBruto > 0 ? saldoComandaBruto : 0m;
+            bool comandaQuitada = saldoComandaBruto <= 0;
+
+            bool possuiSubcomandas = comanda.subcomandas.Any();
+            bool todasSubcomandasFechadas = possuiSubcomandas && comanda.subcomandas.All(s => IsClosedStatus(s.status));
+            bool algumaSubAberta = possuiSubcomandas && comanda.subcomandas.Any(s => IsOpenStatus(s.status));
+            bool algumaSubAguardando = possuiSubcomandas && comanda.subcomandas.Any(s => IsAwaitingStatus(s.status));
+
+            var statusAberta = comanda.tipo.Equals("Mesa", StringComparison.OrdinalIgnoreCase) ? "Ocupada" : "Aberta";
+
+            if (comandaQuitada && (!possuiSubcomandas || todasSubcomandasFechadas))
             {
                 comanda.status = "Fechada";
                 comanda.fechadoem = DateTime.UtcNow;
             }
-            else if (totalPago > 0)
+            else if (
+                (possuiSubcomandas && !todasSubcomandasFechadas && !algumaSubAberta && algumaSubAguardando) ||
+                (!possuiSubcomandas && totalPago > 0 && !comandaQuitada)
+            )
             {
                 comanda.status = "Aguardando Pagamento";
+                comanda.fechadoem = null;
             }
+            else
+            {
+                comanda.status = statusAberta;
+                comanda.fechadoem = null;
+            }
+
+            bool mesaLiberada = false;
 
             if (comanda.mesanum.HasValue)
             {
                 var mesa = await _context.Mesas.FirstOrDefaultAsync(m => m.numero == comanda.mesanum.Value);
                 if (mesa != null)
                 {
-                    mesa.status = comanda.status switch
+                    if (comanda.status == "Fechada")
                     {
-                        "Fechada" => "Livre",
-                        "Aguardando Pagamento" => "Aguardando Pagamento",
-                        _ => "Ocupada"
-                    };
+                        mesa.status = "Livre";
+                        mesaLiberada = true;
+                    }
+                    else if (
+                        possuiSubcomandas && !todasSubcomandasFechadas && !algumaSubAberta && algumaSubAguardando
+                    )
+                    {
+                        mesa.status = "Aguardando Pagamento";
+                    }
+                    else if (!possuiSubcomandas && totalPago > 0 && !comandaQuitada)
+                    {
+                        mesa.status = "Aguardando Pagamento";
+                    }
+                    else
+                    {
+                        mesa.status = "Ocupada";
+                    }
                 }
             }
 
             await _context.SaveChangesAsync();
 
-            return Ok(new { pagamento, status = comanda.status, valorRestante });
+            return Ok(new
+            {
+                pagamento,
+                status = comanda.status,
+                statusSubcomanda = subComanda?.status,
+                valorRestante,
+                valorRestanteSubcomanda,
+                mesaLiberada
+            });
         }
     }
 }
